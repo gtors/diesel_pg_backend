@@ -1,6 +1,6 @@
-use super::backend::Pg;
-use query_builder::QueryBuilder;
-use result::QueryResult;
+use crate::Pg;
+use diesel::query_builder::QueryBuilder;
+use diesel::result::QueryResult;
 
 mod distinct_on;
 mod query_fragment_impls;

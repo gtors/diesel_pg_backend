@@ -2,10 +2,10 @@ use byteorder::{NetworkEndian, ReadBytesExt, WriteBytesExt};
 use std::error::Error;
 use std::io::prelude::*;
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types;
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use diesel::sql_types;
 
 #[cfg(feature = "quickcheck")]
 mod quickcheck_impls;

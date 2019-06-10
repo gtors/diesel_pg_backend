@@ -1,5 +1,5 @@
 use super::{PgConnection, PgTypeMetadata};
-use prelude::*;
+use diesel::prelude::*;
 
 use std::cell::RefCell;
 use std::collections::HashMap;
@@ -33,7 +33,7 @@ impl PgMetadataLookup {
                 .select((
                     oid, typarray,
                     sql::<Bool>("typreceive != 0"),
-                    sql::<Bool>("typsend != 0"))
+                    sql::<Bool>("typsend != 0")))
                 .filter(typname.eq(type_name))
                 .first(&self.conn)
                 .unwrap_or_default();
@@ -69,6 +69,9 @@ impl PgMetadataCache {
 }
 
 table! {
+    use diesel::sql_types::{Text};
+    use crate::sql_types::{Oid};
+
     pg_type (oid) {
         oid -> Oid,
         typname -> Text,

@@ -1,8 +1,8 @@
-use expression::SelectableExpression;
-use pg::Pg;
-use query_builder::{AstPass, QueryFragment, SelectQuery, SelectStatement};
-use query_dsl::methods::DistinctOnDsl;
-use result::QueryResult;
+use diesel::expression::SelectableExpression;
+use crate::Pg;
+use diesel::query_builder::{AstPass, QueryFragment, SelectQuery, SelectStatement};
+use crate::query_dsl::methods::DistinctOnDsl;
+use diesel::result::QueryResult;
 
 /// Represents `DISTINCT ON (...)`
 #[derive(Debug, Clone, Copy, QueryId)]

@@ -1,8 +1,8 @@
-use expression::SqlLiteral;
-use pg::Pg;
-use query_builder::*;
-use query_source::Column;
-use result::QueryResult;
+use diesel::expression::SqlLiteral;
+use crate::Pg;
+use diesel::query_builder::*;
+use diesel::query_source::Column;
+use diesel::result::QueryResult;
 
 /// Used to specify the constraint name for an upsert statement in the form `ON
 /// CONFLICT ON CONSTRAINT`. Note that `constraint_name` must be the name of a

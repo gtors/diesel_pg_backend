@@ -2,10 +2,11 @@ use byteorder::{NetworkEndian, ReadBytesExt, WriteBytesExt};
 use std::fmt;
 use std::io::Write;
 
-use deserialize::{self, FromSql};
-use pg::{Pg, PgMetadataLookup, PgTypeMetadata};
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types::{Array, HasSqlType, Nullable};
+use diesel::deserialize::{self, FromSql};
+use crate::{Pg, PgMetadataLookup, PgTypeMetadata};
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use diesel::sql_types::{HasSqlType, Nullable};
+use crate::sql_types::Array;
 
 impl<T> HasSqlType<Array<T>> for Pg
 where
@@ -55,8 +56,8 @@ where
     }
 }
 
-use expression::bound::Bound;
-use expression::AsExpression;
+use diesel::expression::bound::Bound;
+use diesel::expression::AsExpression;
 
 macro_rules! array_as_expression {
     ($ty:ty, $sql_type:ty) => {

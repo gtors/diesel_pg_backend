@@ -1,11 +1,9 @@
-extern crate uuid;
-
 use std::io::prelude::*;
-
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types::Uuid;
+use uuid;
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use super::sql_types::Uuid;
 
 #[derive(FromSqlRow, AsExpression)]
 #[diesel(foreign_derive)]

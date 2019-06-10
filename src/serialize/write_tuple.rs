@@ -1,7 +1,7 @@
 use std::io::Write;
 
-use pg::Pg;
-use serialize::{self, Output};
+use crate::Pg;
+use diesel::serialize::{self, Output};
 
 /// Helper trait for writing tuples as named composite types
 ///

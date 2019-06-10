@@ -1,9 +1,8 @@
+use diesel::deserialize::{FromSqlRow, Queryable, QueryableByName};
+use diesel::result::{Error::DeserializationError, QueryResult};
 use super::result::PgResult;
 use super::row::PgNamedRow;
-use deserialize::{FromSqlRow, Queryable, QueryableByName};
-use pg::Pg;
-use result::Error::DeserializationError;
-use result::QueryResult;
+use crate::Pg;
 
 use std::marker::PhantomData;
 

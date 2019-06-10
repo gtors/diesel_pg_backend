@@ -1,6 +1,4 @@
-extern crate quickcheck;
-
-use self::quickcheck::{Arbitrary, Gen};
+use quickcheck::{Arbitrary, Gen};
 
 use super::{PgDate, PgInterval, PgTime, PgTimestamp};
 

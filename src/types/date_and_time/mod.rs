@@ -1,15 +1,14 @@
 use std::io::Write;
 use std::ops::Add;
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types::{self, Date, Interval, Time, Timestamp, Timestamptz};
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use diesel::sql_types::{Date, Time, Timestamp, Interval, BigInt, Integer};
+use crate::sql_types::{Timestamptz};
 
 #[cfg(feature = "chrono")]
 mod chrono;
-#[cfg(feature = "deprecated-time")]
-mod deprecated_time;
 #[cfg(feature = "quickcheck")]
 mod quickcheck_impls;
 mod std_time;
@@ -82,70 +81,70 @@ impl PgInterval {
     }
 }
 
-impl ToSql<sql_types::Timestamp, Pg> for PgTimestamp {
+impl ToSql<Timestamp, Pg> for PgTimestamp {
     fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-        ToSql::<sql_types::BigInt, Pg>::to_sql(&self.0, out)
+        ToSql::<BigInt, Pg>::to_sql(&self.0, out)
     }
 }
 
-impl FromSql<sql_types::Timestamp, Pg> for PgTimestamp {
+impl FromSql<Timestamp, Pg> for PgTimestamp {
     fn from_sql(bytes: Option<&[u8]>) -> deserialize::Result<Self> {
-        FromSql::<sql_types::BigInt, Pg>::from_sql(bytes).map(PgTimestamp)
+        FromSql::<BigInt, Pg>::from_sql(bytes).map(PgTimestamp)
     }
 }
 
-impl ToSql<sql_types::Timestamptz, Pg> for PgTimestamp {
+impl ToSql<Timestamptz, Pg> for PgTimestamp {
     fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-        ToSql::<sql_types::Timestamp, Pg>::to_sql(self, out)
+        ToSql::<Timestamp, Pg>::to_sql(self, out)
     }
 }
 
-impl FromSql<sql_types::Timestamptz, Pg> for PgTimestamp {
+impl FromSql<Timestamptz, Pg> for PgTimestamp {
     fn from_sql(bytes: Option<&[u8]>) -> deserialize::Result<Self> {
-        FromSql::<sql_types::Timestamp, Pg>::from_sql(bytes)
+        FromSql::<Timestamp, Pg>::from_sql(bytes)
     }
 }
 
-impl ToSql<sql_types::Date, Pg> for PgDate {
+impl ToSql<Date, Pg> for PgDate {
     fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-        ToSql::<sql_types::Integer, Pg>::to_sql(&self.0, out)
+        ToSql::<Integer, Pg>::to_sql(&self.0, out)
     }
 }
 
-impl FromSql<sql_types::Date, Pg> for PgDate {
+impl FromSql<Date, Pg> for PgDate {
     fn from_sql(bytes: Option<&[u8]>) -> deserialize::Result<Self> {
-        FromSql::<sql_types::Integer, Pg>::from_sql(bytes).map(PgDate)
+        FromSql::<Integer, Pg>::from_sql(bytes).map(PgDate)
     }
 }
 
-impl ToSql<sql_types::Time, Pg> for PgTime {
+impl ToSql<Time, Pg> for PgTime {
     fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-        ToSql::<sql_types::BigInt, Pg>::to_sql(&self.0, out)
+        ToSql::<BigInt, Pg>::to_sql(&self.0, out)
     }
 }
 
-impl FromSql<sql_types::Time, Pg> for PgTime {
+impl FromSql<Time, Pg> for PgTime {
     fn from_sql(bytes: Option<&[u8]>) -> deserialize::Result<Self> {
-        FromSql::<sql_types::BigInt, Pg>::from_sql(bytes).map(PgTime)
+        FromSql::<BigInt, Pg>::from_sql(bytes).map(PgTime)
     }
 }
 
-impl ToSql<sql_types::Interval, Pg> for PgInterval {
+impl ToSql<Interval, Pg> for PgInterval {
     fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-        ToSql::<sql_types::BigInt, Pg>::to_sql(&self.microseconds, out)?;
-        ToSql::<sql_types::Integer, Pg>::to_sql(&self.days, out)?;
-        ToSql::<sql_types::Integer, Pg>::to_sql(&self.months, out)?;
+        ToSql::<BigInt, Pg>::to_sql(&self.microseconds, out)?;
+        ToSql::<Integer, Pg>::to_sql(&self.days, out)?;
+        ToSql::<Integer, Pg>::to_sql(&self.months, out)?;
         Ok(IsNull::No)
     }
 }
 
-impl FromSql<sql_types::Interval, Pg> for PgInterval {
+impl FromSql<Interval, Pg> for PgInterval {
     fn from_sql(bytes: Option<&[u8]>) -> deserialize::Result<Self> {
         let bytes = not_none!(bytes);
         Ok(PgInterval {
-            microseconds: FromSql::<sql_types::BigInt, Pg>::from_sql(Some(&bytes[..8]))?,
-            days: FromSql::<sql_types::Integer, Pg>::from_sql(Some(&bytes[8..12]))?,
-            months: FromSql::<sql_types::Integer, Pg>::from_sql(Some(&bytes[12..16]))?,
+            microseconds: FromSql::<BigInt, Pg>::from_sql(Some(&bytes[..8]))?,
+            days: FromSql::<Integer, Pg>::from_sql(Some(&bytes[8..12]))?,
+            months: FromSql::<Integer, Pg>::from_sql(Some(&bytes[12..16]))?,
         })
     }
 }

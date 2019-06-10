@@ -1,18 +1,16 @@
 //! Support for JSON and `jsonb` values under PostgreSQL.
 
-extern crate serde_json;
-
 use std::io::prelude::*;
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types;
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use diesel::sql_types;
 
 #[allow(dead_code)]
 mod foreign_derives {
-    use super::serde_json;
-    use sql_types::{Json, Jsonb};
+    use serde_json;
+    use diesel::sql_types::{Json, Jsonb};
 
     #[derive(FromSqlRow, AsExpression)]
     #[diesel(foreign_derive)]

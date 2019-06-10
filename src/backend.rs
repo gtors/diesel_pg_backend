@@ -1,11 +1,13 @@
 //! The PostgreSQL backend
 
 use std::convert::From;
+use std::default::Default;
 use diesel::backend::*;
-use diesel::byteorder::NetworkEndian;
+use byteorder::NetworkEndian;
 use diesel::deserialize::Queryable;
 use diesel::query_builder::bind_collector::RawBytesBindCollector;
-use diesel::sql_types::{Oid, Bool, TypeMetadata};
+use diesel::sql_types::{Bool, TypeMetadata};
+use crate::sql_types::{Oid};
 
 use super::query_builder::PgQueryBuilder;
 use super::PgMetadataLookup;
@@ -15,9 +17,14 @@ use super::PgMetadataLookup;
 pub struct Pg;
 
 /// Format of the type
+#[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub enum PgTypeFormat {
     Binary,
     Text,
+}
+
+impl Default for PgTypeFormat {
+    fn default() -> Self { PgTypeFormat::Text }
 }
 
 impl From<bool> for PgTypeFormat {
@@ -53,10 +60,11 @@ impl Queryable<(Oid, Oid, Bool, Bool), Pg> for PgTypeMetadata {
         PgTypeMetadata {
             oid: oid,
             array_oid: array_oid,
-            recv_format: recv_binary::into(),
-            send_format: send_binary::into(),
+            recv_format: recv_binary.into(),
+            send_format: send_binary.into(),
         }
     }
+}
 
 impl Backend for Pg {
     type QueryBuilder = PgQueryBuilder;

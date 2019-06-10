@@ -12,14 +12,14 @@ use self::cursor::*;
 use self::raw::RawConnection;
 use self::result::PgResult;
 use self::stmt::Statement;
-use connection::*;
-use deserialize::{Queryable, QueryableByName};
-use pg::{metadata_lookup::PgMetadataCache, Pg, PgMetadataLookup, TransactionBuilder};
-use query_builder::bind_collector::RawBytesBindCollector;
-use query_builder::*;
-use result::ConnectionError::CouldntSetupConfiguration;
-use result::*;
-use sql_types::HasSqlType;
+use diesel::connection::*;
+use diesel::deserialize::{Queryable, QueryableByName};
+use crate::{metadata_lookup::PgMetadataCache, Pg, PgMetadataLookup, TransactionBuilder};
+use diesel::query_builder::bind_collector::RawBytesBindCollector;
+use diesel::query_builder::*;
+use diesel::result::ConnectionError::CouldntSetupConfiguration;
+use diesel::result::*;
+use diesel::sql_types::HasSqlType;
 
 /// The connection string expected by `PgConnection::establish`
 /// should be a PostgreSQL connection string, as documented at
@@ -190,15 +190,14 @@ extern "C" fn noop_notice_processor(_: *mut libc::c_void, _message: *const libc:
 
 #[cfg(test)]
 mod tests {
-    extern crate dotenv;
 
-    use self::dotenv::dotenv;
+    use dotenv::dotenv;
     use std::env;
 
     use super::*;
-    use dsl::sql;
-    use prelude::*;
-    use sql_types::{Integer, VarChar};
+    use diesel::dsl::sql;
+    use diesel::prelude::*;
+    use diesel::sql_types::{Integer, VarChar};
 
     #[test]
     fn prepared_statements_are_cached() {

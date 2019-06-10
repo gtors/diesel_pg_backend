@@ -1,8 +1,11 @@
-use expression::Expression;
-use pg::Pg;
-use query_builder::*;
-use result::QueryResult;
-use sql_types::{Date, NotNull, Nullable, Timestamp, Timestamptz, VarChar};
+use diesel::expression::Expression;
+use crate::Pg;
+use diesel::query_builder::*;
+use diesel::result::QueryResult;
+use diesel::sql_types::{
+    Date, NotNull, Nullable, Timestamp, VarChar
+};
+use crate::sql_types::Timestamptz;
 
 /// Marker trait for types which are valid in `AT TIME ZONE` expressions
 pub trait DateTimeLike {}

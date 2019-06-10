@@ -4,9 +4,9 @@ use std::ffi::CString;
 use std::os::raw as libc;
 use std::ptr;
 
-use super::result::PgResult;
-use crate::pg::PgTypeMetadata;
 use diesel::result::QueryResult;
+use super::result::PgResult;
+use crate::{PgTypeMetadata, PgTypeFormat};
 
 pub use super::raw::RawConnection;
 
@@ -34,8 +34,10 @@ impl Statement {
             .iter()
             .map(|data| data.as_ref().map(|d| d.len() as libc::c_int).unwrap_or(0))
             .collect::<Vec<_>>();
-        let has_text_cols = param_types.iter()
-            .any(|&x| x.send_format == PgTypeFormat::Binary)
+        // FIXME:
+        //let has_text_cols = param_types.iter()
+        //    .any(|&x| x.send_format == PgTypeFormat::Binary);
+        let has_text_cols = true;
         let internal_res = unsafe {
             conn.exec_prepared(
                 self.name.as_ptr(),
@@ -62,7 +64,7 @@ impl Statement {
         let param_types_vec = param_types.iter().map(|x| x.oid).collect();
 
         let has_text_params = param_types.iter()
-            .any(|&x| x.recv_format == PgTypeFormat::Binary)
+            .any(|&x| x.recv_format == PgTypeFormat::Binary);
 
         let internal_result = unsafe {
             conn.prepare(

@@ -1,9 +1,9 @@
-use pg::Pg;
-use query_builder::locking_clause::{
+use crate::Pg;
+use diesel::query_builder::locking_clause::{
     ForKeyShare, ForNoKeyUpdate, ForShare, ForUpdate, NoModifier, NoWait, SkipLocked,
 };
-use query_builder::{AstPass, QueryFragment};
-use result::QueryResult;
+use diesel::query_builder::{AstPass, QueryFragment};
+use diesel::result::QueryResult;
 
 impl QueryFragment<Pg> for ForUpdate {
     fn walk_ast(&self, mut out: AstPass<Pg>) -> QueryResult<()> {

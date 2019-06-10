@@ -1,5 +1,5 @@
-use dsl::AsExprOf;
-use sql_types::VarChar;
+use diesel::dsl::AsExprOf;
+use diesel::sql_types::VarChar;
 
 /// The return type of `lhs.ilike(rhs)`
 pub type ILike<Lhs, Rhs> = super::operators::ILike<Lhs, AsExprOf<Rhs, VarChar>>;

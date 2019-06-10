@@ -3,10 +3,11 @@
 use std::io::prelude::*;
 use std::ops::{Add, AddAssign, Sub, SubAssign};
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, Output, ToSql};
-use sql_types::{BigInt, Money};
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, Output, ToSql};
+use diesel::sql_types::{BigInt};
+use crate::sql_types::{Money};
 
 /// Money is represented in Postgres as a 64 bit signed integer.  This struct is a dumb wrapper
 /// type, meant only to indicate the integer's meaning.  The fractional precision of the value is
@@ -87,9 +88,7 @@ impl SubAssign for PgMoney {
 
 #[cfg(feature = "quickcheck")]
 mod quickcheck_impls {
-    extern crate quickcheck;
-
-    use self::quickcheck::{Arbitrary, Gen};
+    use quickcheck::{Arbitrary, Gen};
     use super::PgMoney;
 
     impl Arbitrary for PgMoney {

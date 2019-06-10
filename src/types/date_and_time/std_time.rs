@@ -1,10 +1,10 @@
 use std::io::Write;
 use std::time::{Duration, SystemTime, UNIX_EPOCH};
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, Output, ToSql};
-use sql_types;
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, Output, ToSql};
+use diesel::sql_types;
 
 fn pg_epoch() -> SystemTime {
     let thirty_years = Duration::from_secs(946_684_800);

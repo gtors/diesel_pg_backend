@@ -1,14 +1,17 @@
 use byteorder::*;
 use std::io::Write;
 
-use deserialize::{self, FromSql, FromSqlRow, Queryable};
-use expression::{AppearsOnTable, AsExpression, Expression, SelectableExpression};
-use pg::Pg;
-use query_builder::{AstPass, QueryFragment};
-use result::QueryResult;
-use row::Row;
-use serialize::{self, IsNull, Output, ToSql, WriteTuple};
-use sql_types::{HasSqlType, Record};
+use diesel::deserialize::{self, FromSql, FromSqlRow, Queryable};
+use diesel::expression::{AppearsOnTable, AsExpression, Expression, SelectableExpression};
+use diesel::query_builder::{AstPass, QueryFragment};
+use diesel::result::QueryResult;
+use diesel::row::Row;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use diesel::sql_types::{HasSqlType};
+
+use crate::Pg;
+use crate::sql_types::{Record};
+use crate::serialize::{WriteTuple};
 
 macro_rules! tuple_impls {
     ($(
@@ -168,10 +171,10 @@ where
 #[cfg(test)]
 mod tests {
     use super::*;
-    use dsl::sql;
-    use prelude::*;
-    use sql_types::*;
-    use test_helpers::*;
+    use diesel::dsl::sql;
+    use diesel::prelude::*;
+    use diesel::sql_types::*;
+    use diesel::test_helpers::*;
 
     #[test]
     fn record_deserializes_correctly() {

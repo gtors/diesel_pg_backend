@@ -1,10 +1,11 @@
-use backend::Backend;
-use expression::{
+use std::marker::PhantomData;
+use diesel::backend::Backend;
+use diesel::expression::{
     AppearsOnTable, AsExpressionList, Expression, NonAggregate, SelectableExpression,
 };
-use query_builder::{AstPass, QueryFragment};
-use sql_types;
-use std::marker::PhantomData;
+use diesel::query_builder::{AstPass, QueryFragment};
+use diesel::result::QueryResult;
+use crate::sql_types;
 
 /// An ARRAY[...] literal.
 #[derive(Debug, Clone, Copy, QueryId)]
@@ -69,7 +70,7 @@ where
     DB: Backend,
     for<'a> (&'a T): QueryFragment<DB>,
 {
-    fn walk_ast(&self, mut out: AstPass<DB>) -> ::result::QueryResult<()> {
+    fn walk_ast(&self, mut out: AstPass<DB>) -> QueryResult<()> {
         out.push_sql("ARRAY[");
         QueryFragment::walk_ast(&&self.elements, out.reborrow())?;
         out.push_sql("]");

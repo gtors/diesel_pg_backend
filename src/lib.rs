@@ -3,6 +3,8 @@
 //! Much of this module is re-exported from database agnostic locations.
 //! However, if you are writing code specifically to extend Diesel on
 //! PostgreSQL, you may need to work with this module directly.
+#[macro_use]
+extern crate diesel;
 
 pub mod expression;
 pub mod types;
@@ -12,15 +14,17 @@ mod backend;
 mod connection;
 mod metadata_lookup;
 mod query_builder;
-pub(crate) mod serialize;
+mod serialize;
 mod transaction;
+mod query_dsl;
 
-pub use self::backend::{Pg, PgTypeMetadata};
+pub use self::backend::{Pg, PgTypeMetadata, PgTypeFormat};
 pub use self::connection::PgConnection;
 pub use self::metadata_lookup::PgMetadataLookup;
 pub use self::query_builder::DistinctOnClause;
 pub use self::query_builder::PgQueryBuilder;
 pub use self::transaction::TransactionBuilder;
+pub use self::types::sql_types;
 
 /// Data structures for PG types which have no corresponding Rust type
 ///

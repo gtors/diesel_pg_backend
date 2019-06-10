@@ -1,8 +1,8 @@
-use expression::{AppearsOnTable, Expression};
-use pg::Pg;
-use query_builder::*;
-use query_source::*;
-use result::QueryResult;
+use diesel::expression::{AppearsOnTable, Expression};
+use crate::Pg;
+use diesel::query_builder::*;
+use diesel::query_source::*;
+use diesel::result::QueryResult;
 
 /// Represents `excluded.column` in an `ON CONFLICT DO UPDATE` clause.
 pub fn excluded<T>(excluded: T) -> Excluded<T> {

@@ -1,13 +1,15 @@
 use byteorder::{NetworkEndian, ReadBytesExt, WriteBytesExt};
+use bitflags::bitflags;
 use std::collections::Bound;
 use std::io::Write;
 
-use deserialize::{self, FromSql, FromSqlRow, Queryable};
-use expression::bound::Bound as SqlBound;
-use expression::AsExpression;
-use pg::{Pg, PgMetadataLookup, PgTypeMetadata};
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types::*;
+use diesel::deserialize::{self, FromSql, FromSqlRow, Queryable};
+use diesel::expression::bound::Bound as SqlBound;
+use diesel::expression::AsExpression;
+use crate::{Pg, PgMetadataLookup, PgTypeMetadata};
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use super::sql_types::*;
+use diesel::sql_types::*;
 
 // https://github.com/postgres/postgres/blob/113b0045e20d40f726a0a30e33214455e4f1385e/src/include/utils/rangetypes.h#L35-L43
 bitflags! {
@@ -69,7 +71,7 @@ impl<T, ST> FromSqlRow<Range<ST>, Pg> for (Bound<T>, Bound<T>)
 where
     (Bound<T>, Bound<T>): FromSql<Range<ST>, Pg>,
 {
-    fn build_from_row<R: ::row::Row<Pg>>(row: &mut R) -> deserialize::Result<Self> {
+    fn build_from_row<R: diesel::row::Row<Pg>>(row: &mut R) -> deserialize::Result<Self> {
         FromSql::<Range<ST>, Pg>::from_sql(row.take())
     }
 }

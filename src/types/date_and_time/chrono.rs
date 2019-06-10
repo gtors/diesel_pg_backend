@@ -1,17 +1,16 @@
 //! This module makes it possible to map `chrono::DateTime` values to postgres `Date`
 //! and `Timestamp` fields. It is enabled with the `chrono` feature.
 
-extern crate chrono;
 
-use self::chrono::naive::MAX_DATE;
-use self::chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, NaiveTime, TimeZone, Utc};
+use chrono::naive::MAX_DATE;
+use chrono::{DateTime, Duration, NaiveDate, NaiveDateTime, NaiveTime, TimeZone, Utc};
 use std::io::Write;
 
 use super::{PgDate, PgTime, PgTimestamp};
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, Output, ToSql};
-use sql_types::{Date, Time, Timestamp, Timestamptz};
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, Output, ToSql};
+use diesel::sql_types::{Date, Time, Timestamp, Timestamptz};
 
 // Postgres timestamps start from January 1st 2000.
 fn pg_epoch() -> NaiveDateTime {
@@ -118,17 +117,15 @@ impl FromSql<Date, Pg> for NaiveDate {
 
 #[cfg(test)]
 mod tests {
-    extern crate chrono;
-    extern crate dotenv;
 
-    use self::chrono::naive::MAX_DATE;
-    use self::chrono::{Duration, FixedOffset, NaiveDate, NaiveTime, TimeZone, Utc};
-    use self::dotenv::dotenv;
+    use chrono::naive::MAX_DATE;
+    use chrono::{Duration, FixedOffset, NaiveDate, NaiveTime, TimeZone, Utc};
+    use dotenv::dotenv;
 
-    use dsl::{now, sql};
-    use prelude::*;
-    use select;
-    use sql_types::{Date, Time, Timestamp, Timestamptz};
+    use diesel::dsl::{now, sql};
+    use diesel::prelude::*;
+    use diesel::select;
+    use diesel::sql_types::{Date, Time, Timestamp, Timestamptz};
 
     fn connection() -> PgConnection {
         dotenv().ok();

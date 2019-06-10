@@ -1,13 +1,12 @@
-extern crate pq_sys;
 
-use self::pq_sys::*;
+use pq_sys::*;
 use std::ffi::{CStr, CString};
 use std::os::raw as libc;
 use std::{slice, str};
 
 use super::raw::RawResult;
 use super::row::PgRow;
-use result::{DatabaseErrorInformation, DatabaseErrorKind, Error, QueryResult};
+use diesel::result::{DatabaseErrorInformation, DatabaseErrorKind, Error, QueryResult};
 
 pub struct PgResult {
     internal_result: RawResult,

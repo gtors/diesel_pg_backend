@@ -1,14 +1,11 @@
-extern crate ipnetwork;
-extern crate libc;
-
-use self::ipnetwork::{IpNetwork, Ipv4Network, Ipv6Network};
+use ipnetwork::{IpNetwork, Ipv4Network, Ipv6Network};
 use std::io::prelude::*;
 use std::net::{Ipv4Addr, Ipv6Addr};
 
-use deserialize::{self, FromSql};
-use pg::Pg;
-use serialize::{self, IsNull, Output, ToSql};
-use sql_types::{Cidr, Inet, MacAddr};
+use diesel::deserialize::{self, FromSql};
+use crate::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use super::sql_types::{Cidr, Inet, MacAddr};
 
 #[cfg(windows)]
 const AF_INET: u8 = 2;
@@ -115,7 +112,7 @@ macro_rules! impl_Sql {
 
         impl ToSql<$ty, Pg> for IpNetwork {
             fn to_sql<W: Write>(&self, out: &mut Output<W, Pg>) -> serialize::Result {
-                use self::ipnetwork::IpNetwork::*;
+                use ipnetwork::IpNetwork::*;
                 let net_type = $net_type;
                 match *self {
                     V4(ref net) => {

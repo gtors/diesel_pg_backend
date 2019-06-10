@@ -1,21 +1,16 @@
 #[cfg(feature = "bigdecimal")]
 mod bigdecimal {
-    extern crate bigdecimal;
-    extern crate num_bigint;
-    extern crate num_integer;
-    extern crate num_traits;
-
-    use self::bigdecimal::BigDecimal;
-    use self::num_bigint::{BigInt, BigUint, Sign};
-    use self::num_integer::Integer;
-    use self::num_traits::{Signed, ToPrimitive, Zero};
+    use bigdecimal::BigDecimal;
+    use num_bigint::{BigInt, BigUint, Sign};
+    use num_integer::Integer;
+    use num_traits::{Signed, ToPrimitive, Zero};
     use std::io::prelude::*;
 
-    use deserialize::{self, FromSql};
-    use pg::data_types::PgNumeric;
-    use pg::Pg;
-    use serialize::{self, Output, ToSql};
-    use sql_types::Numeric;
+    use diesel::deserialize::{self, FromSql};
+    use crate::data_types::PgNumeric;
+    use crate::Pg;
+    use diesel::serialize::{self, Output, ToSql};
+    use super::sql_types::Numeric;
 
     use std::convert::{TryFrom, TryInto};
     use std::error::Error;

@@ -1,10 +1,12 @@
 #![allow(dead_code)]
-use backend::Backend;
-use connection::TransactionManager;
-use pg::Pg;
-use prelude::*;
-use query_builder::{AstPass, QueryBuilder, QueryFragment};
-use result::Error;
+use diesel::backend::Backend;
+use diesel::connection::TransactionManager;
+use diesel::prelude::*;
+use diesel::query_builder::{AstPass, QueryBuilder, QueryFragment};
+use diesel::result::Error;
+
+use crate::Pg;
+use super::{PgConnection};
 
 /// Used to build a transaction, specifying additional details.
 ///
